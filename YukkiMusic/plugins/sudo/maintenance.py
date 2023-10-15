@@ -15,12 +15,11 @@ from strings import get_command, get_string
 from YukkiMusic import app
 from YukkiMusic.misc import SUDOERS
 from YukkiMusic.utils.database import (
-    get_lang, 
+    get_lang,
     is_maintenance,
     maintenance_off,
     maintenance_on,
 )
-from YukkiMusic.utils.decorators.language import language
 
 # Commands
 MAINTENANCE_COMMAND = get_command("MAINTENANCE_COMMAND")
@@ -41,9 +40,7 @@ async def maintenance(client, message: Message):
     state = state.lower()
     if state == "enable":
         if await is_maintenance() is False:
-            await message.reply_text(
-                "Maintenance mode is already enabled"
-            )
+            await message.reply_text("Maintenance mode is already enabled")
         else:
             await maintenance_on()
             await message.reply_text(_["maint_2"])
@@ -52,8 +49,6 @@ async def maintenance(client, message: Message):
             await maintenance_off()
             await message.reply_text(_["maint_3"])
         else:
-            await message.reply_text(
-                "Maintenance mode is already disabled"
-            )
+            await message.reply_text("Maintenance mode is already disabled")
     else:
         await message.reply_text(usage)

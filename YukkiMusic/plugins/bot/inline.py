@@ -26,9 +26,7 @@ async def inline_query_handler(client, query):
     answers = []
     if text.strip() == "":
         try:
-            await client.answer_inline_query(
-                query.id, results=answer, cache_time=10
-            )
+            await client.answer_inline_query(query.id, results=answer, cache_time=10)
         except:
             return
     else:
@@ -38,9 +36,7 @@ async def inline_query_handler(client, query):
             title = (result[x]["title"]).title()
             duration = result[x]["duration"]
             views = result[x]["viewCount"]["short"]
-            thumbnail = result[x]["thumbnails"][0]["url"].split("?")[
-                0
-            ]
+            thumbnail = result[x]["thumbnails"][0]["url"].split("?")[0]
             channellink = result[x]["channel"]["link"]
             channel = result[x]["channel"]["name"]
             link = result[x]["link"]
@@ -79,8 +75,6 @@ __Reply with /play on this searched message to stream it on voice chat.__
                 )
             )
         try:
-            return await client.answer_inline_query(
-                query.id, results=answers
-            )
+            return await client.answer_inline_query(query.id, results=answers)
         except:
             return

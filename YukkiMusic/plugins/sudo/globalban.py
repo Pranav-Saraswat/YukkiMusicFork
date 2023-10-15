@@ -9,7 +9,6 @@
 #
 
 import asyncio
-import time
 
 from pyrogram import filters
 from pyrogram.errors import FloodWait
@@ -66,9 +65,7 @@ async def gbanuser(client, message: Message, _):
         served_chats.append(int(chat["chat_id"]))
     time_expected = len(served_chats)
     time_expected = get_readable_time(time_expected)
-    mystic = await message.reply_text(
-        _["gban_5"].format(mention, time_expected)
-    )
+    mystic = await message.reply_text(_["gban_5"].format(mention, time_expected))
     number_of_chats = 0
     for chat_id in served_chats:
         try:
@@ -79,9 +76,7 @@ async def gbanuser(client, message: Message, _):
         except Exception:
             pass
     await add_banned_user(user_id)
-    await message.reply_text(
-        _["gban_6"].format(mention, number_of_chats)
-    )
+    await message.reply_text(_["gban_6"].format(mention, number_of_chats))
     await mystic.delete()
 
 
@@ -109,9 +104,7 @@ async def gungabn(client, message: Message, _):
         served_chats.append(int(chat["chat_id"]))
     time_expected = len(served_chats)
     time_expected = get_readable_time(time_expected)
-    mystic = await message.reply_text(
-        _["gban_8"].format(mention, time_expected)
-    )
+    mystic = await message.reply_text(_["gban_8"].format(mention, time_expected))
     number_of_chats = 0
     for chat_id in served_chats:
         try:
@@ -122,9 +115,7 @@ async def gungabn(client, message: Message, _):
         except Exception:
             pass
     await remove_banned_user(user_id)
-    await message.reply_text(
-        _["gban_9"].format(mention, number_of_chats)
-    )
+    await message.reply_text(_["gban_9"].format(mention, number_of_chats))
     await mystic.delete()
 
 
@@ -142,9 +133,7 @@ async def gbanned_list(client, message: Message, _):
         count += 1
         try:
             user = await app.get_users(user_id)
-            user = (
-                user.first_name if not user.mention else user.mention
-            )
+            user = user.first_name if not user.mention else user.mention
             msg += f"{count}➤ {user}\n"
         except Exception:
             msg += f"{count}➤ [Unfetched User]{user_id}\n"

@@ -10,8 +10,7 @@
 
 from typing import Union
 
-from config import autoclean, chatstats, userstats
-from config import time_to_seconds
+from config import autoclean, chatstats, time_to_seconds, userstats
 from YukkiMusic.misc import db
 
 

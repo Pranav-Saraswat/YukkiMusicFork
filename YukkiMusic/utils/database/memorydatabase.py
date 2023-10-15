@@ -194,9 +194,7 @@ async def get_lang(chat_id: int) -> str:
 
 async def set_lang(chat_id: int, lang: str):
     langm[chat_id] = lang
-    await langdb.update_one(
-        {"chat_id": chat_id}, {"$set": {"lang": lang}}, upsert=True
-    )
+    await langdb.update_one({"chat_id": chat_id}, {"$set": {"lang": lang}}, upsert=True)
 
 
 # Muted
@@ -460,12 +458,7 @@ async def maintenance_on():
 
 # Audio Video Limit
 
-from pytgcalls.types import (
-    AudioParameters, 
-    AudioQuality, 
-    VideoParameters, 
-    VideoQuality
-)
+from pytgcalls.types import AudioParameters, AudioQuality, VideoParameters, VideoQuality
 
 
 async def save_audio_bitrate(chat_id: int, bitrate: str):

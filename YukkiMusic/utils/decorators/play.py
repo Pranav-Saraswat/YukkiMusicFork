@@ -15,9 +15,9 @@ from strings import get_string
 from YukkiMusic import YouTube, app
 from YukkiMusic.misc import SUDOERS
 from YukkiMusic.utils.database import (
-    get_cmode, 
+    get_cmode,
     get_lang,
-    get_playmode, 
+    get_playmode,
     get_playtype,
     is_active_chat,
     is_commanddelete_on,
@@ -48,27 +48,17 @@ def PlayWrapper(command):
         language = await get_lang(message.chat.id)
         _ = get_string(language)
         audio_telegram = (
-            (
-                message.reply_to_message.audio
-                or message.reply_to_message.voice
-            )
+            (message.reply_to_message.audio or message.reply_to_message.voice)
             if message.reply_to_message
             else None
         )
         video_telegram = (
-            (
-                message.reply_to_message.video
-                or message.reply_to_message.document
-            )
+            (message.reply_to_message.video or message.reply_to_message.document)
             if message.reply_to_message
             else None
         )
         url = await YouTube.url(message)
-        if (
-            audio_telegram is None
-            and video_telegram is None
-            and url is None
-        ):
+        if audio_telegram is None and video_telegram is None and url is None:
             if len(message.command) < 2:
                 if "stream" in message.command:
                     return await message.reply_text(_["str_1"])
@@ -89,9 +79,7 @@ def PlayWrapper(command):
                     ]
                 ]
             )
-            return await message.reply_text(
-                _["general_4"], reply_markup=upl
-            )
+            return await message.reply_text(_["general_4"], reply_markup=upl)
         if message.command[0][0] == "c":
             chat_id = await get_cmode(message.chat.id)
             if chat_id is None:

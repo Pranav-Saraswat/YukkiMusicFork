@@ -6,7 +6,7 @@
 # Please see < https://github.com/TeamYukki/YukkiMusicBot/blob/master/LICENSE >
 #
 # All rights reserved.
-#s
+# s
 
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, Message
@@ -19,8 +19,7 @@ from YukkiMusic.core.call import Yukki
 from YukkiMusic.misc import db
 from YukkiMusic.utils.database import get_loop
 from YukkiMusic.utils.decorators import AdminRightsCheck
-from YukkiMusic.utils.inline.play import (stream_markup,
-                                          telegram_markup)
+from YukkiMusic.utils.inline.play import stream_markup, telegram_markup
 from YukkiMusic.utils.stream.autoclear import auto_clean
 from YukkiMusic.utils.thumbnails import gen_thumb
 
@@ -28,11 +27,7 @@ from YukkiMusic.utils.thumbnails import gen_thumb
 SKIP_COMMAND = get_command("SKIP_COMMAND")
 
 
-@app.on_message(
-    filters.command(SKIP_COMMAND)
-    & filters.group
-    & ~BANNED_USERS
-)
+@app.on_message(filters.command(SKIP_COMMAND) & filters.group & ~BANNED_USERS)
 @AdminRightsCheck
 async def skip(cli, message: Message, _, chat_id):
     if not len(message.command) < 2:
@@ -53,14 +48,9 @@ async def skip(cli, message: Message, _, chat_id):
                             try:
                                 popped = check.pop(0)
                             except:
-                                return await message.reply_text(
-                                    _["admin_16"]
-                                )
+                                return await message.reply_text(_["admin_16"])
                             if popped:
-                                if (
-                                    config.AUTO_DOWNLOADS_CLEAR
-                                    == str(True)
-                                ):
+                                if config.AUTO_DOWNLOADS_CLEAR == str(True):
                                     await auto_clean(popped)
                             if not check:
                                 try:
@@ -74,9 +64,7 @@ async def skip(cli, message: Message, _, chat_id):
                                     return
                                 break
                     else:
-                        return await message.reply_text(
-                            _["admin_15"].format(count)
-                        )
+                        return await message.reply_text(_["admin_15"].format(count))
                 else:
                     return await message.reply_text(_["admin_14"])
             else:
@@ -116,9 +104,7 @@ async def skip(cli, message: Message, _, chat_id):
     if "live_" in queued:
         n, link = await YouTube.video(videoid, True)
         if n == 0:
-            return await message.reply_text(
-                _["admin_11"].format(title)
-            )
+            return await message.reply_text(_["admin_11"].format(title))
         try:
             await Yukki.skip_stream(chat_id, link, video=status)
         except Exception:
@@ -136,9 +122,7 @@ async def skip(cli, message: Message, _, chat_id):
         db[chat_id][0]["mystic"] = run
         db[chat_id][0]["markup"] = "tg"
     elif "vid_" in queued:
-        mystic = await message.reply_text(
-            _["call_10"], disable_web_page_preview=True
-        )
+        mystic = await message.reply_text(_["call_10"], disable_web_page_preview=True)
         try:
             file_path, direct = await YouTube.download(
                 videoid,
@@ -189,9 +173,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=config.TELEGRAM_AUDIO_URL
                 if str(streamtype) == "audio"
                 else config.TELEGRAM_VIDEO_URL,
-                caption=_["stream_3"].format(
-                    title, check[0]["dur"], user
-                ),
+                caption=_["stream_3"].format(title, check[0]["dur"], user),
                 reply_markup=InlineKeyboardMarkup(button),
             )
             db[chat_id][0]["mystic"] = run
@@ -202,9 +184,7 @@ async def skip(cli, message: Message, _, chat_id):
                 photo=config.SOUNCLOUD_IMG_URL
                 if str(streamtype) == "audio"
                 else config.TELEGRAM_VIDEO_URL,
-                caption=_["stream_3"].format(
-                    title, check[0]["dur"], user
-                ),
+                caption=_["stream_3"].format(title, check[0]["dur"], user),
                 reply_markup=InlineKeyboardMarkup(button),
             )
             db[chat_id][0]["mystic"] = run

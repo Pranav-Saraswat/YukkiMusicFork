@@ -77,9 +77,7 @@ async def dont_do_this():
                         put = {
                             "msg_id": sent.id,
                             "timer_after": time_now
-                            + timedelta(
-                                minutes=config.CLEANMODE_DELETE_MINS
-                            ),
+                            + timedelta(minutes=config.CLEANMODE_DELETE_MINS),
                         }
                         clean[x].append(put)
                         send_to += 1

@@ -16,9 +16,9 @@ from strings import get_string
 from YukkiMusic import app
 from YukkiMusic.misc import SUDOERS
 from YukkiMusic.utils.database import (
-    get_authuser_names, 
+    get_authuser_names,
     get_cmode,
-    get_lang, 
+    get_lang,
     is_active_chat,
     is_commanddelete_on,
     is_maintenance,
@@ -56,9 +56,7 @@ def AdminRightsCheck(mystic):
                     ]
                 ]
             )
-            return await message.reply_text(
-                _["general_4"], reply_markup=upl
-            )
+            return await message.reply_text(_["general_4"], reply_markup=upl)
         if message.command[0][0] == "c":
             chat_id = await get_cmode(message.chat.id)
             if chat_id is None:
@@ -113,15 +111,11 @@ def AdminActual(mystic):
                     ]
                 ]
             )
-            return await message.reply_text(
-                _["general_4"], reply_markup=upl
-            )
+            return await message.reply_text(_["general_4"], reply_markup=upl)
         if message.from_user.id not in SUDOERS:
             try:
-                member = (
-                    await app.get_chat_member(
-                        message.chat.id, message.from_user.id
-                    )
+                member = await app.get_chat_member(
+                    message.chat.id, message.from_user.id
                 )
             except:
                 return
@@ -147,29 +141,19 @@ def ActualAdminCB(mystic):
             _ = get_string("en")
         if CallbackQuery.message.chat.type == ChatType.PRIVATE:
             return await mystic(client, CallbackQuery, _)
-        is_non_admin = await is_nonadmin_chat(
-            CallbackQuery.message.chat.id
-        )
+        is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
         if not is_non_admin:
             try:
-                a = (
-                    await app.get_chat_member(
-                        CallbackQuery.message.chat.id,
-                        CallbackQuery.from_user.id,
-                    )
+                a = await app.get_chat_member(
+                    CallbackQuery.message.chat.id,
+                    CallbackQuery.from_user.id,
                 )
             except:
-                return await CallbackQuery.answer(
-                    _["general_5"], show_alert=True
-                )
+                return await CallbackQuery.answer(_["general_5"], show_alert=True)
             if not a.privileges.can_manage_video_chats:
                 if CallbackQuery.from_user.id not in SUDOERS:
-                    token = await int_to_alpha(
-                        CallbackQuery.from_user.id
-                    )
-                    _check = await get_authuser_names(
-                        CallbackQuery.from_user.id
-                    )
+                    token = await int_to_alpha(CallbackQuery.from_user.id)
+                    _check = await get_authuser_names(CallbackQuery.from_user.id)
                     if token not in _check:
                         try:
                             return await CallbackQuery.answer(
