@@ -10,6 +10,7 @@
 
 from pyrogram import filters
 from pyrogram.types import Message
+from unidecode import unidecode
 
 from strings import get_command
 from YukkiMusic import app
@@ -33,6 +34,7 @@ async def activevc(_, message: Message):
     for x in served_chats:
         try:
             title = (await app.get_chat(x)).title
+            title = unidecode(title)
         except Exception:
             title = "Private Group"
         if (await app.get_chat(x)).username:
@@ -59,6 +61,7 @@ async def activevi_(_, message: Message):
     for x in served_chats:
         try:
             title = (await app.get_chat(x)).title
+            title = unidecode(title)
         except Exception:
             title = "Private Group"
         if (await app.get_chat(x)).username:
