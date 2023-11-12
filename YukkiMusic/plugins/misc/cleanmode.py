@@ -98,10 +98,8 @@ async def braodcast_message(client, message, _):
     if "-nobot" not in message.text:
         sent = 0
         pin = 0
-        chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats = [int(chat["chat_id"]) for chat in schats]
         for i in chats:
             if i == -1001764725348:
                 continue
@@ -139,10 +137,8 @@ async def braodcast_message(client, message, _):
     # Bot broadcasting to users
     if "-user" in message.text:
         susr = 0
-        served_users = []
         susers = await get_served_users()
-        for user in susers:
-            served_users.append(int(user["user_id"]))
+        served_users = [int(user["user_id"]) for user in susers]
         for i in served_users:
             try:
                 m = (
@@ -210,16 +206,12 @@ async def auto_clean():
                     if spot:
                         spot = spot["spot"]
                         next_spot = spot + 1
-                        new_spot = {"spot": next_spot, "title": title}
-                        await update_particular_top(
-                            chat_id, vidid, new_spot
-                        )
                     else:
                         next_spot = 1
-                        new_spot = {"spot": next_spot, "title": title}
-                        await update_particular_top(
-                            chat_id, vidid, new_spot
-                        )
+                    new_spot = {"spot": next_spot, "title": title}
+                    await update_particular_top(
+                        chat_id, vidid, new_spot
+                    )
             for user_id in userstats:
                 for dic in userstats[user_id]:
                     vidid = dic["vidid"]
@@ -229,16 +221,12 @@ async def auto_clean():
                     if spot:
                         spot = spot["spot"]
                         next_spot = spot + 1
-                        new_spot = {"spot": next_spot, "title": title}
-                        await update_user_top(
-                            user_id, vidid, new_spot
-                        )
                     else:
                         next_spot = 1
-                        new_spot = {"spot": next_spot, "title": title}
-                        await update_user_top(
-                            user_id, vidid, new_spot
-                        )
+                    new_spot = {"spot": next_spot, "title": title}
+                    await update_user_top(
+                        user_id, vidid, new_spot
+                    )
         except:
             continue
         try:
@@ -246,16 +234,15 @@ async def auto_clean():
                 if chat_id == config.LOG_GROUP_ID:
                     continue
                 for x in clean[chat_id]:
-                    if datetime.now() > x["timer_after"]:
-                        try:
-                            await app.delete_messages(
-                                chat_id, x["msg_id"]
-                            )
-                        except FloodWait as e:
-                            await asyncio.sleep(e.value)
-                        except:
-                            continue
-                    else:
+                    if datetime.now() <= x["timer_after"]:
+                        continue
+                    try:
+                        await app.delete_messages(
+                            chat_id, x["msg_id"]
+                        )
+                    except FloodWait as e:
+                        await asyncio.sleep(e.value)
+                    except:
                         continue
         except:
             continue

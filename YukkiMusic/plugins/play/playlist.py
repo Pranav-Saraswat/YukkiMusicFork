@@ -57,10 +57,7 @@ async def check_playlist(client, message: Message, _):
         msg += _["playlist_5"].format(duration)
     link = await Yukkibin(msg)
     lines = msg.count("\n")
-    if lines >= 17:
-        car = os.linesep.join(msg.split(os.linesep)[:17])
-    else:
-        car = msg
+    car = os.linesep.join(msg.split(os.linesep)[:17]) if lines >= 17 else msg
     carbon = await Carbon.generate(car, randint(100, 10000000000))
     await get.delete()
     await message.reply_photo(
@@ -103,13 +100,8 @@ async def get_keyboard(_, user_id):
             )
         )
     keyboard.row(
-        InlineKeyboardButton(
-            text=_["PL_B_5"],
-            callback_data=f"delete_warning",
-        ),
-        InlineKeyboardButton(
-            text=_["CLOSE_BUTTON"], callback_data=f"close"
-        ),
+        InlineKeyboardButton(text=_["PL_B_5"], callback_data="delete_warning"),
+        InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close"),
     )
     return keyboard, count
 
@@ -150,15 +142,13 @@ async def play_playlist(client, CallbackQuery, _):
     chat_id = CallbackQuery.message.chat.id
     user_name = CallbackQuery.from_user.first_name
     await CallbackQuery.message.delete()
-    result = []
     try:
         await CallbackQuery.answer()
     except:
         pass
     video = True if mode == "v" else None
     mystic = await CallbackQuery.message.reply_text(_["play_1"])
-    for vidids in _playlist:
-        result.append(vidids)
+    result = list(_playlist)
     try:
         await stream(
             _,

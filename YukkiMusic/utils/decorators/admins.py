@@ -74,9 +74,8 @@ def AdminRightsCheck(mystic):
                 admins = adminlist.get(message.chat.id)
                 if not admins:
                     return await message.reply_text(_["admin_18"])
-                else:
-                    if message.from_user.id not in admins:
-                        return await message.reply_text(_["admin_19"])
+                if message.from_user.id not in admins:
+                    return await message.reply_text(_["admin_19"])
         return await mystic(client, message, _, chat_id)
 
     return wrapper
@@ -119,7 +118,7 @@ def AdminActual(mystic):
                         message.chat.id, message.from_user.id
                     )
                 )
-                if not member.status == ChatMemberStatus.ADMINISTRATOR:
+                if member.status != ChatMemberStatus.ADMINISTRATOR:
                     return await message.reply(_["general_5"])
             except Exception as e:
                 return await message.reply(f"Error: {str(e)}")
@@ -153,7 +152,7 @@ def ActualAdminCB(mystic):
                         CallbackQuery.from_user.id,
                     )
                 )
-                if not a.status == ChatMemberStatus.ADMINISTRATOR:
+                if a.status != ChatMemberStatus.ADMINISTRATOR:
                     if CallbackQuery.from_user.id not in SUDOERS:
                         token = await int_to_alpha(
                             CallbackQuery.from_user.id

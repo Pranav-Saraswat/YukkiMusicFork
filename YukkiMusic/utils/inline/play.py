@@ -34,7 +34,7 @@ selections = [
 
 def stream_markup_timer(_, videoid, chat_id, played, dur):
     bar = random.choice(selections)
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=f"{played} {bar} {dur}",
@@ -57,12 +57,11 @@ def stream_markup_timer(_, videoid, chat_id, played, dur):
             )
         ],
     ]
-    return buttons
 
 
 def telegram_markup_timer(_, chat_id, played, dur):
     bar = random.choice(selections)
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=f"{played} {bar} {dur}",
@@ -79,14 +78,13 @@ def telegram_markup_timer(_, chat_id, played, dur):
             ),
         ],
     ]
-    return buttons
 
 
 ## Inline without Timer Bar
 
 
 def stream_markup(_, videoid, chat_id):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["PL_B_2"],
@@ -103,11 +101,10 @@ def stream_markup(_, videoid, chat_id):
             )
         ],
     ]
-    return buttons
 
 
 def telegram_markup(_, chat_id):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["PL_B_3"],
@@ -118,14 +115,13 @@ def telegram_markup(_, chat_id):
             ),
         ],
     ]
-    return buttons
 
 
 ## Search Query Inline
 
 
 def track_markup(_, videoid, user_id, channel, fplay):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["P_B_1"],
@@ -143,11 +139,10 @@ def track_markup(_, videoid, user_id, channel, fplay):
             )
         ],
     ]
-    return buttons
 
 
 def playlist_markup(_, videoid, user_id, ptype, channel, fplay):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["P_B_1"],
@@ -165,14 +160,13 @@ def playlist_markup(_, videoid, user_id, ptype, channel, fplay):
             ),
         ],
     ]
-    return buttons
 
 
 ## Live Stream Markup
 
 
 def livestream_markup(_, videoid, user_id, mode, channel, fplay):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["P_B_3"],
@@ -184,7 +178,6 @@ def livestream_markup(_, videoid, user_id, mode, channel, fplay):
             ),
         ],
     ]
-    return buttons
 
 
 ## Slider Query Markup
@@ -194,7 +187,7 @@ def slider_markup(
     _, videoid, user_id, query, query_type, channel, fplay
 ):
     query = f"{query[:20]}"
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text=_["P_B_1"],
@@ -220,14 +213,13 @@ def slider_markup(
             ),
         ],
     ]
-    return buttons
 
 
 ## Cpanel Markup
 
 
 def panel_markup_1(_, videoid, chat_id):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text="⏸ Pause", callback_data=f"ADMIN Pause|{chat_id}"
@@ -260,11 +252,10 @@ def panel_markup_1(_, videoid, chat_id):
             ),
         ],
     ]
-    return buttons
 
 
 def panel_markup_2(_, videoid, chat_id):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text="🔇 Mute", callback_data=f"ADMIN Mute|{chat_id}"
@@ -298,11 +289,10 @@ def panel_markup_2(_, videoid, chat_id):
             ),
         ],
     ]
-    return buttons
 
 
 def panel_markup_3(_, videoid, chat_id):
-    buttons = [
+    return [
         [
             InlineKeyboardButton(
                 text="⏮ 10 Seconds",
@@ -338,4 +328,3 @@ def panel_markup_3(_, videoid, chat_id):
             ),
         ],
     ]
-    return buttons

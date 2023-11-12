@@ -107,9 +107,8 @@ def PlayWrapper(command):
                 admins = adminlist.get(message.chat.id)
                 if not admins:
                     return await message.reply_text(_["admin_18"])
-                else:
-                    if message.from_user.id not in admins:
-                        return await message.reply_text(_["play_4"])
+                if message.from_user.id not in admins:
+                    return await message.reply_text(_["play_4"])
         if message.command[0][0] == "v":
             video = True
         else:

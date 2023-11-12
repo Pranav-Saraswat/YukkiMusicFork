@@ -64,9 +64,7 @@ async def stream(
                     duration_sec,
                     thumbnail,
                     vidid,
-                ) = await YouTube.details(
-                    search, False if spotify else True
-                )
+                ) = await YouTube.details(search, not spotify)
             except:
                 continue
             if str(duration_min) == "None":
@@ -129,23 +127,19 @@ async def stream(
                 db[chat_id][0]["markup"] = "stream"
         if count == 0:
             return
-        else:
-            link = await Yukkibin(msg)
-            lines = msg.count("\n")
-            if lines >= 17:
-                car = os.linesep.join(msg.split(os.linesep)[:17])
-            else:
-                car = msg
-            carbon = await Carbon.generate(
-                car, randint(100, 10000000)
-            )
-            upl = close_markup(_)
-            return await app.send_photo(
-                original_chat_id,
-                photo=carbon,
-                caption=_["playlist_18"].format(link, position),
-                reply_markup=upl,
-            )
+        link = await Yukkibin(msg)
+        lines = msg.count("\n")
+        car = os.linesep.join(msg.split(os.linesep)[:17]) if lines >= 17 else msg
+        carbon = await Carbon.generate(
+            car, randint(100, 10000000)
+        )
+        upl = close_markup(_)
+        return await app.send_photo(
+            original_chat_id,
+            photo=carbon,
+            caption=_["playlist_18"].format(link, position),
+            reply_markup=upl,
+        )
     elif streamtype == "youtube":
         link = result["link"]
         vidid = result["vidid"]

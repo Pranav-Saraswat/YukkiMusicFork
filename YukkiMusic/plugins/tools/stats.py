@@ -54,9 +54,7 @@ STATS_COMMAND = get_command("STATS_COMMAND")
 )
 @language
 async def stats_global(client, message: Message, _):
-    upl = stats_buttons(
-        _, True if message.from_user.id in SUDOERS else False
-    )
+    upl = stats_buttons(_, message.from_user.id in SUDOERS)
     await message.reply_photo(
         photo=config.STATS_IMG_URL,
         caption=_["gstats_11"].format(config.MUSIC_BOT_NAME),
@@ -96,9 +94,8 @@ async def gstats_global(client, message: Message, _):
         for vidid, count in list_arranged.items():
             if vidid == "telegram":
                 continue
-            else:
-                videoid = vidid
-                co = count
+            videoid = vidid
+            co = count
             break
         return videoid, co
 
@@ -116,9 +113,7 @@ async def gstats_global(client, message: Message, _):
     ) = await YouTube.details(videoid, True)
     title = title.title()
     final = f"Top Most Played Track on {MUSIC_BOT_NAME}\n\n**Title:** {title}\n\nPlayed** {co} **times"
-    upl = get_stats_markup(
-        _, True if message.from_user.id in SUDOERS else False
-    )
+    upl = get_stats_markup(_, message.from_user.id in SUDOERS)
     await app.send_photo(
         message.chat.id,
         photo=thumbnail,
@@ -256,10 +251,7 @@ async def top_users_ten(client, CallbackQuery: CallbackQuery, _):
 async def overall_stats(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
     what = callback_data.split(None, 1)[1]
-    if what != "s":
-        upl = overallback_stats_markup(_)
-    else:
-        upl = back_stats_buttons(_)
+    upl = overallback_stats_markup(_) if what != "s" else back_stats_buttons(_)
     try:
         await CallbackQuery.answer()
     except:
@@ -276,10 +268,7 @@ async def overall_stats(client, CallbackQuery, _):
     fetch_playlist = config.PLAYLIST_FETCH_LIMIT
     song = config.SONG_DOWNLOAD_DURATION
     play_duration = config.DURATION_LIMIT_MIN
-    if config.AUTO_LEAVING_ASSISTANT == str(True):
-        ass = "Yes"
-    else:
-        ass = "No"
+    ass = "Yes" if config.AUTO_LEAVING_ASSISTANT == str(True) else "No"
     cm = config.CLEANMODE_DELETE_MINS
     text = f"""**Bot's Stats and Information:**
 
@@ -318,10 +307,7 @@ async def overall_stats(client, CallbackQuery, _):
         )
     callback_data = CallbackQuery.data.strip()
     what = callback_data.split(None, 1)[1]
-    if what != "s":
-        upl = overallback_stats_markup(_)
-    else:
-        upl = back_stats_buttons(_)
+    upl = overallback_stats_markup(_) if what != "s" else back_stats_buttons(_)
     try:
         await CallbackQuery.answer()
     except:
@@ -435,10 +421,7 @@ async def back_buttons(client, CallbackQuery, _):
                 reply_markup=upl,
             )
     if command == "GlobalStats":
-        upl = get_stats_markup(
-            _,
-            True if CallbackQuery.from_user.id in SUDOERS else False,
-        )
+        upl = get_stats_markup(_, CallbackQuery.from_user.id in SUDOERS)
         med = InputMediaPhoto(
             media=config.GLOBAL_IMG_URL,
             caption=_["gstats_10"].format(config.MUSIC_BOT_NAME),
@@ -454,10 +437,7 @@ async def back_buttons(client, CallbackQuery, _):
                 reply_markup=upl,
             )
     if command == "GETSTATS":
-        upl = stats_buttons(
-            _,
-            True if CallbackQuery.from_user.id in SUDOERS else False,
-        )
+        upl = stats_buttons(_, CallbackQuery.from_user.id in SUDOERS)
         med = InputMediaPhoto(
             media=config.STATS_IMG_URL,
             caption=_["gstats_11"].format(config.MUSIC_BOT_NAME),

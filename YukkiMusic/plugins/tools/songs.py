@@ -172,18 +172,6 @@ async def song_helper_cb(client, CallbackQuery, _):
                         callback_data=f"song_download {stype}|{fom}|{vidid}",
                     ),
                 )
-        keyboard.row(
-            InlineKeyboardButton(
-                text=_["BACK_BUTTON"],
-                callback_data=f"song_back {stype}|{vidid}",
-            ),
-            InlineKeyboardButton(
-                text=_["CLOSE_BUTTON"], callback_data=f"close"
-            ),
-        )
-        return await CallbackQuery.edit_message_reply_markup(
-            reply_markup=keyboard
-        )
     else:
         try:
             formats_available, link = await YouTube.formats(
@@ -210,18 +198,17 @@ async def song_helper_cb(client, CallbackQuery, _):
                     callback_data=f"song_download {stype}|{x['format_id']}|{vidid}",
                 )
             )
-        keyboard.row(
-            InlineKeyboardButton(
-                text=_["BACK_BUTTON"],
-                callback_data=f"song_back {stype}|{vidid}",
-            ),
-            InlineKeyboardButton(
-                text=_["CLOSE_BUTTON"], callback_data=f"close"
-            ),
-        )
-        return await CallbackQuery.edit_message_reply_markup(
-            reply_markup=keyboard
-        )
+
+    keyboard.row(
+        InlineKeyboardButton(
+            text=_["BACK_BUTTON"],
+            callback_data=f"song_back {stype}|{vidid}",
+        ),
+        InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close"),
+    )
+    return await CallbackQuery.edit_message_reply_markup(
+        reply_markup=keyboard
+    )
 
 
 # Downloading Songs Here
@@ -246,7 +233,6 @@ async def song_download_cb(client, CallbackQuery, _):
     title = (x["title"]).title()
     title = re.sub("\W+", " ", title)
     thumb_image_path = await CallbackQuery.message.download()
-    duration = x["duration"]
     if stype == "video":
         thumb_image_path = await CallbackQuery.message.download()
         width = CallbackQuery.message.photo.width
@@ -261,6 +247,7 @@ async def song_download_cb(client, CallbackQuery, _):
             )
         except Exception as e:
             return await mystic.edit_text(_["song_9"].format(e))
+        duration = x["duration"]
         med = InputMediaVideo(
             media=file_path,
             duration=duration,
