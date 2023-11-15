@@ -112,7 +112,7 @@ def PlayWrapper(command):
         if message.command[0][0] == "v":
             video = True
         else:
-            if "-v" in message.text:
+            if message.text and "-v" in message.text:
                 video = True
             else:
                 video = True if message.command[0][1] == "v" else None
