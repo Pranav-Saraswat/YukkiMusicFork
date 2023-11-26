@@ -119,7 +119,7 @@ async def start_comm(client, message: Message, _):
                     f"{message.from_user.mention} has just started bot to check <code>SUDOLIST</code>\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
                 )
             return
-        if name[:3] == "lyr":
+        if name[:3] == "lyrics*:
             query = (str(name)).replace("lyrics_", "", 1)
             lyrical = config.lyrical
             lyrics = lyrical.get(query)
