@@ -12,19 +12,19 @@ from motor.motor_asyncio import AsyncIOMotorClient as _mongo_client_
 from pymongo import MongoClient
 from pyrogram import Client
 
-import config
+from config import MONGO_DB_URI, BOT_TOKEN, API_ID, API_HASH
 from ..logging import LOGGER
 
 TEMP_MONGODB = "mongodb+srv://userbot:userbot@userbot.nrzfzdf.mongodb.net/?retryWrites=true&w=majority"
 
 def initialize_mongo_client():
-    if config.MONGO_DB_URI is None:
+    if MONGO_DB_URI is None:
         LOGGER(__name__).warning("No MONGO DB URL found. Your Bot will work on Yukki's Database")
         temp_client = Client(
             "Yukki",
-            bot_token=config.BOT_TOKEN,
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
+            bot_token=BOT_TOKEN,
+            api_id=API_ID,
+            api_hash=API_HASH,
         )
         temp_client.start()
         info = temp_client.get_me()
@@ -35,8 +35,8 @@ def initialize_mongo_client():
         mongodb = _mongo_async_[username]
         pymongodb = _mongo_sync_[username]
     else:
-        _mongo_async_ = _mongo_client_(config.MONGO_DB_URI)
-        _mongo_sync_ = MongoClient(config.MONGO_DB_URI)
+        _mongo_async_ = _mongo_client_(MONGO_DB_URI)
+        _mongo_sync_ = MongoClient(MONGO_DB_URI)
         mongodb = _mongo_async_.Yukki
         pymongodb = _mongo_sync_.Yukki
 
