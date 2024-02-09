@@ -19,42 +19,51 @@ from YukkiMusic.misc import SUDOERS
 SPEEDTEST_COMMAND = get_command("SPEEDTEST_COMMAND")
 
 
-def testspeed(m):
+def testspeed():
     try:
         test = speedtest.Speedtest()
         test.get_best_server()
-        m = m.edit("Running Download SpeedTest")
-        test.download()
-        m = m.edit("Running Upload SpeedTest")
-        test.upload()
-        test.results.share()
+        download_speed = test.download()
+        upload_speed = test.upload()
         result = test.results.dict()
-        m = m.edit("Sharing SpeedTest Results")
+        result['download_speed'] = download_speed
+        result['upload_speed'] = upload_speed
     except Exception as e:
-        return m.edit(e)
+        raise e
     return result
 
 
-@app.on_message(filters.command(SPEEDTEST_COMMAND) & SUDOERS)
-async def speedtest_function(client, message):
-    m = await message.reply_text("Running Speed test")
-    loop = asyncio.get_event_loop_policy().get_event_loop()
-    result = await loop.run_in_executor(None, testspeed, m)
-    output = f"""**Speedtest Results**
+async def run_testspeed(m):
+    result = await asyncio.to_thread(testspeed)
+    return result
+
+
+async def main():
+    m = await app.send_message("Running Speed test")
+    try:
+        result = await run_testspeed(m)
+        output = f"""**Speedtest Results**
+        
+    <u>**Client:**</u>
+    **__ISP:__** {result['client']['isp']}
+    **__Country:__** {result['client']['country']}
     
-<u>**Client:**</u>
-**__ISP:__** {result['client']['isp']}
-**__Country:__** {result['client']['country']}
-  
-<u>**Server:**</u>
-**__Name:__** {result['server']['name']}
-**__Country:__** {result['server']['country']}, {result['server']['cc']}
-**__Sponsor:__** {result['server']['sponsor']}
-**__Latency:__** {result['server']['latency']}  
-**__Ping:__** {result['ping']}"""
-    msg = await app.send_photo(
-        chat_id=message.chat.id, 
-        photo=result["share"], 
-        caption=output
-    )
-    await m.delete()
+    <u>**Server:**</u>
+    **__Name:__** {result['server']['name']}
+    **__Country:__** {result['server']['country']}, {result['server']['cc']}
+    **__Sponsor:__** {result['server']['sponsor']}
+    **__Latency:__** {result['server']['latency']}  
+    **__Ping:__** {result['ping']}"""
+        await app.send_photo(
+            chat_id=m.chat.id, 
+            photo=result["share"], 
+            caption=output
+        )
+        await m.delete()
+    except Exception as e:
+        await m.edit(f"Error: {str(e)}")
+
+
+@app.on_message(filters.command(SPEEDTEST_COMMAND) & SUDOERS)
+def speedtest_command(client, message):
+    asyncio.run(main())

@@ -9,209 +9,54 @@
 #
 
 import sys
-
 from pyrogram import Client
-
 import config
-
 from ..logging import LOGGER
 
 assistants = []
 assistantids = []
 
-
 class Userbot(Client):
-    def __init__(self):
-        self.one = Client(
-            "YukkiString1",
+    def __init__(self, session_string, assistant_number):
+        super().__init__(
+            f"YukkiString{assistant_number}",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_string=str(config.STRING1),
-            no_updates=True,
-        )
-        self.two = Client(
-            "YukkiString2",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING2),
-            no_updates=True,
-        )
-        self.three = Client(
-            "YukkiString3",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING3),
-            no_updates=True,
-        )
-        self.four = Client(
-            "YukkiString4",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING4),
-            no_updates=True,
-        )
-        self.five = Client(
-            "YukkiString5",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING5),
+            session_string=str(session_string),
             no_updates=True,
         )
 
-    async def start(self):
-        LOGGER(__name__).info(f"Starting Assistant Clients")
-        if config.STRING1:
-            await self.one.start()
+    async def start(self, assistant_number):
+        LOGGER(__name__).info(f"Starting Assistant {assistant_number}")
+        if self.is_initialized():
             try:
-                await self.one.join_chat("TeamYM")
-                await self.one.join_chat("TheYukki")
-                await self.one.join_chat("YukkiSupport")
-            except:
-                pass
-            assistants.append(1)
-            try:
-                await self.one.send_message(
-                    config.LOG_GROUP_ID, "Assistant Started"
-                )
-            except:
-                LOGGER(__name__).error(
-                    f"Assistant Account 1 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin! "
-                )
+                await self.join_common_channels()
+                await self.send_message(config.LOG_GROUP_ID, "Assistant Started")
+            except Exception as e:
+                LOGGER(__name__).error(f"Assistant Account {assistant_number} failed to start: {e}")
                 sys.exit()
-            get_me = await self.one.get_me()
-            self.one.username = get_me.username
-            self.one.id = get_me.id
+
+            get_me = await self.get_me()
+            self.username = get_me.username
+            self.id = get_me.id
             assistantids.append(get_me.id)
             if get_me.last_name:
-                self.one.name = (
-                    get_me.first_name + " " + get_me.last_name
-                )
+                self.name = f"{get_me.first_name} {get_me.last_name}"
             else:
-                self.one.name = get_me.first_name
-            LOGGER(__name__).info(
-                f"Assistant Started as {self.one.name}"
-            )
-        if config.STRING2:
-            await self.two.start()
+                self.name = get_me.first_name
+            LOGGER(__name__).info(f"Assistant {assistant_number} Started as {self.name}")
+
+    async def join_common_channels(self):
+        common_channels = ["TeamYM", "TheYukki", "YukkiSupport"]
+        for channel in common_channels:
             try:
-                await self.two.join_chat("TeamYM")
-                await self.two.join_chat("TheYukki")
-                await self.two.join_chat("YukkiSupport")
-            except:
-                pass
-            assistants.append(2)
-            try:
-                await self.two.send_message(
-                    config.LOG_GROUP_ID, "Assistant Started"
-                )
-            except:
-                LOGGER(__name__).error(
-                    f"Assistant Account 2 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin! "
-                )
-                sys.exit()
-            get_me = await self.two.get_me()
-            self.two.username = get_me.username
-            self.two.id = get_me.id
-            assistantids.append(get_me.id)
-            if get_me.last_name:
-                self.two.name = (
-                    get_me.first_name + " " + get_me.last_name
-                )
-            else:
-                self.two.name = get_me.first_name
-            LOGGER(__name__).info(
-                f"Assistant Two Started as {self.two.name}"
-            )
-        if config.STRING3:
-            await self.three.start()
-            try:
-                await self.three.join_chat("TeamYM")
-                await self.three.join_chat("TheYukki")
-                await self.three.join_chat("YukkiSupport")
-            except:
-                pass
-            assistants.append(3)
-            try:
-                await self.three.send_message(
-                    config.LOG_GROUP_ID, "Assistant Started"
-                )
-            except:
-                LOGGER(__name__).error(
-                    f"Assistant Account 3 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin! "
-                )
-                sys.exit()
-            get_me = await self.three.get_me()
-            self.three.username = get_me.username
-            self.three.id = get_me.id
-            assistantids.append(get_me.id)
-            if get_me.last_name:
-                self.three.name = (
-                    get_me.first_name + " " + get_me.last_name
-                )
-            else:
-                self.three.name = get_me.first_name
-            LOGGER(__name__).info(
-                f"Assistant Three Started as {self.three.name}"
-            )
-        if config.STRING4:
-            await self.four.start()
-            try:
-                await self.four.join_chat("TeamYM")
-                await self.four.join_chat("TheYukki")
-                await self.four.join_chat("YukkiSupport")
-            except:
-                pass
-            assistants.append(4)
-            try:
-                await self.four.send_message(
-                    config.LOG_GROUP_ID, "Assistant Started"
-                )
-            except:
-                LOGGER(__name__).error(
-                    f"Assistant Account 4 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin! "
-                )
-                sys.exit()
-            get_me = await self.four.get_me()
-            self.four.username = get_me.username
-            self.four.id = get_me.id
-            assistantids.append(get_me.id)
-            if get_me.last_name:
-                self.four.name = (
-                    get_me.first_name + " " + get_me.last_name
-                )
-            else:
-                self.four.name = get_me.first_name
-            LOGGER(__name__).info(
-                f"Assistant Four Started as {self.four.name}"
-            )
-        if config.STRING5:
-            await self.five.start()
-            try:
-                await self.five.join_chat("TeamYM")
-                await self.five.join_chat("TheYukki")
-                await self.five.join_chat("YukkiSupport")
-            except:
-                pass
-            assistants.append(5)
-            try:
-                await self.five.send_message(
-                    config.LOG_GROUP_ID, "Assistant Started"
-                )
-            except:
-                LOGGER(__name__).error(
-                    f"Assistant Account 5 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin! "
-                )
-                sys.exit()
-            get_me = await self.five.get_me()
-            self.five.username = get_me.username
-            self.five.id = get_me.id
-            assistantids.append(get_me.id)
-            if get_me.last_name:
-                self.five.name = (
-                    get_me.first_name + " " + get_me.last_name
-                )
-            else:
-                self.five.name = get_me.first_name
-            LOGGER(__name__).info(
-                f"Assistant Five Started as {self.five.name}"
-            )
+                await self.join_chat(channel)
+            except Exception as e:
+                LOGGER(__name__).error(f"Failed to join channel {channel}: {e}")
+
+userbots = [Userbot(session, i + 1) for i, session in enumerate(config.STRING) if session]
+
+async def start_assistants():
+    for i, userbot in enumerate(userbots, start=1):
+        await userbot.start(i)
+        assistants.append(i)

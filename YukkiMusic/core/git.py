@@ -19,8 +19,6 @@ import config
 
 from ..logging import LOGGER
 
-loop = asyncio.get_event_loop_policy().get_event_loop()
-
 
 def install_req(cmd: str) -> Tuple[str, str, int, int]:
     async def install_requirements():
@@ -38,9 +36,7 @@ def install_req(cmd: str) -> Tuple[str, str, int, int]:
             process.pid,
         )
 
-    return loop.run_until_complete(
-        install_requirements()
-    )
+    return asyncio.run(install_requirements())
 
 
 def git():

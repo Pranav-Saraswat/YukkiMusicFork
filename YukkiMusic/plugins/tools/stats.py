@@ -27,18 +27,25 @@ from YukkiMusic import YouTube, app
 from YukkiMusic.core.userbot import assistants
 from YukkiMusic.misc import SUDOERS, pymongodb
 from YukkiMusic.plugins import ALL_MODULES
-from YukkiMusic.utils.database import (get_global_tops,
-                                       get_particulars, get_queries,
-                                       get_served_chats,
-                                       get_served_users, get_sudoers,
-                                       get_top_chats, get_topp_users)
+from YukkiMusic.utils.database import (
+    get_global_tops,
+    get_particulars, 
+    get_queries,
+    get_served_chats,
+    get_served_users, 
+    get_sudoers,
+    get_top_chats, 
+    get_topp_users,
+)
 from YukkiMusic.utils.decorators.language import language, languageCB
-from YukkiMusic.utils.inline.stats import (back_stats_buttons,
-                                           back_stats_markup,
-                                           get_stats_markup,
-                                           overallback_stats_markup,
-                                           stats_buttons,
-                                           top_ten_stats_markup)
+from YukkiMusic.utils.inline.stats import (
+    back_stats_buttons,
+    back_stats_markup,
+    get_stats_markup,
+    overallback_stats_markup,
+    stats_buttons,
+    top_ten_stats_markup,
+)
 
 loop = asyncio.get_running_loop()
 
@@ -377,8 +384,8 @@ async def overall_stats(client, CallbackQuery, _):
 
 **Python Version :** {pyver.split()[0]}
 **Pyrogram Version :** {pyrover}
-**Py-TgCalls Version :** {pytgver}
-**N-Tgcalls Version :** {ngtgver}
+**PyTgCalls Version :** {pytgver}
+**NTgcalls Version :** {ngtgver}
 **Storage Avail:** {total[:4]} GiB
 **Storage Used:** {used[:4]} GiB
 **Storage Left:** {free[:4]} GiB

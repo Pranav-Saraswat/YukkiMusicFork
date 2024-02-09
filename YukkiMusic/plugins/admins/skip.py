@@ -19,8 +19,10 @@ from YukkiMusic.core.call import Yukki
 from YukkiMusic.misc import db
 from YukkiMusic.utils.database import get_loop
 from YukkiMusic.utils.decorators import AdminRightsCheck
-from YukkiMusic.utils.inline.play import (stream_markup,
-                                          telegram_markup)
+from YukkiMusic.utils.inline.play import (
+    stream_markup,
+    telegram_markup,
+)
 from YukkiMusic.utils.stream.autoclear import auto_clean
 from YukkiMusic.utils.thumbnails import gen_thumb
 
